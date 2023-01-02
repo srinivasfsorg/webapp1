@@ -1,30 +1,44 @@
-# crudapp
-Django application to perform CRUD operations
+#PS C:\Users\akhil\projec\crudapp>cd
 
-## Run It
-* Clone the project:
-```
-$ git clone https://github.com/FahadulShadhin/crudapp.git
-```
+PS C:\Users\akhil\projec\crudapp>tar
 
-* Install required packages:
-```
-$ pip install -r requirements.txt
-```
+PS C:\Users\akhil\projec\crudapp>ls
 
-* Run server:
-```
-$ python manage.py runserver
-```
-<p>>> The application should be running at development server 127.0.0.1:8000</p>
+PS C:\Users\akhil\projec\crudapp>cd..
 
-* Make migrations to database:
-```
-$ python manage.py makemigrations
-$ python manage.py migrate
-```
+PS C:\Users\akhil\projec>cd ..
 
-* Get admin access:
-```
-$ python manage.py createsuperuser (enter username, email, password)
-```
+PS C:\Users\akhil>tar -cvzf webapp.tar.gz crudapp
+
+PS C:\Users\akhil\projec\crudapp>ls .\webapp.tar.gz
+
+PS C:\Users\akhil\projec\crudapp>scp -i sandbox.pem webapp.tar.gz centos@13.232.83.118:
+
+PS C:\Users\akhil\projec\crudapp>ssh -i sandbox.pem centos@13.232.83.118
+
+[centos@-172-31-11-8 ~]$ls
+
+[centos@-172-31-11-8 ~]$du -sch webapp.tar.gz
+
+[centos@-172-31-11-8 ~]$tar webapp.tar.gz crudapp
+
+[centos@-172-31-11-8 ~]$tar -xvzf webapp.tar.gz
+
+[centos@-172-31-11-8 ~]$ls
+
+[centos@-172-31-11-8 ~]$ls -lrt
+
+[centos@-172-31-11-8 ~]$curl localhost:8000
+
+[centos@-172-31-11-8 ~]$curl 127.0.0.1:8000
+
+[centos@-172-31-11-8 ~]$ gunicorn main.wsgi --bind 0.0.0.0:8000
+
+ 
+
+3.111.42.234:8000/
+
+ 
+
+ 
+

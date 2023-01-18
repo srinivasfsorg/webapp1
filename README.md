@@ -40,9 +40,7 @@ Step 2: Create keypair with name mykp(select private key file format as a .pem)
 
 Computing
 
-Step 1: Launch 1 EC2 instance(centos7 image) with name mywebserver
-
-    Note: Auto-assign public IP : Enable
+Step 1: Launch 1 EC2 instance(centos7 image) with name mywebserver(Auto-assign public IP : Enable)
 
 # Install and configure required software packages. 
 

@@ -1,44 +1,91 @@
-#PS C:\Users\akhil\projec\crudapp>cd
+# Title
 
-PS C:\Users\akhil\projec\crudapp>tar
+This case study is intended to set up and deploy webapp on centos machine.
 
-PS C:\Users\akhil\projec\crudapp>ls
+# Technologies to be used.
 
-PS C:\Users\akhil\projec\crudapp>cd..
+Frontend:  HTML
 
-PS C:\Users\akhil\projec>cd ..
+Backend: Django
 
-PS C:\Users\akhil>tar -cvzf webapp.tar.gz crudapp
+Database: SQL
 
-PS C:\Users\akhil\projec\crudapp>ls .\webapp.tar.gz
+Cloud Platform: AWS
 
-PS C:\Users\akhil\projec\crudapp>scp -i sandbox.pem webapp.tar.gz centos@13.232.83.118:
+# Infrastructure Setup
 
-PS C:\Users\akhil\projec\crudapp>ssh -i sandbox.pem centos@13.232.83.118
+Networking 
 
-[centos@-172-31-11-8 ~]$ls
+Step 1: Launch VPC with name myvpc with cidr : 10.0.0.0/16 
 
-[centos@-172-31-11-8 ~]$du -sch webapp.tar.gz
+Step 2: Launch Internet Gateway named as myigw 
 
-[centos@-172-31-11-8 ~]$tar webapp.tar.gz crudapp
+Step 3: Launch Subnet with name mysubnet with cidr 10.0.0.0/24 
 
-[centos@-172-31-11-8 ~]$tar -xvzf webapp.tar.gz
+Step 4: Launch Route Table with myrtb 
 
-[centos@-172-31-11-8 ~]$ls
+Step 5: Follow the below steps to configure internet connection.(otherwise we can’t connect to resources which resides in myvpc from our local network) 
 
-[centos@-172-31-11-8 ~]$ls -lrt
+attach myigw to myvpc
 
-[centos@-172-31-11-8 ~]$curl localhost:8000
+add myigw to routes in myrtb(destination 0.0.0.0/0, target myigw)
 
-[centos@-172-31-11-8 ~]$curl 127.0.0.1:8000
+associate mysubnet in myrtb 
 
-[centos@-172-31-11-8 ~]$ gunicorn main.wsgi --bind 0.0.0.0:8000
+Security
 
- 
+Step 1: Security group with name mysg(add inbound rule to open traffic for all ports)
 
-3.111.42.234:8000/
+Step 2: Create keypair with name mykp(select private key file format as a .pem)
 
- 
+Computing
 
- 
+Step 1: Launch 1 EC2 instance(centos7 image) with name mywebserver
 
+    Note: Auto-assign public IP : Enable
+
+# Install and configure required software packages. 
+
+Step 1: Connect to the above launched instance
+
+$ssh -i <<mykp>> centos@<<PUBLIC_IP>>
+
+Step 2: Install git 
+
+$sudo yum install git -y
+
+Step 3: Install pip package manager
+
+$sudo yum install python3-pip -y
+
+Step 4: Install django package
+$sudo pip3 install django
+
+$sudo vi /usr/local/lib64/python3.6/site-packages/django/db/backends/sqlite3/base.py  (line 67   replace > with ==)
+Step 4: Install gunicorn server
+
+$sudo pip3 install gunicorn
+
+# Deployment
+
+$git clone  http://github.com/akhilvaka2/webapp.git 
+
+$cd webap
+
+$python3 manage.py makemigrations
+
+$python3 manage.py migrate
+
+$gunicorn main.wsgi --bind 0.0.0.0:8000
+
+# Testing
+
+$curl localhost:8000
+
+$curl 127.0.0.1:8000
+
+$curl <PRIVATE_IP>:8000
+
+$curl <PUBLIC_IP>:8000
+
+$http://<PUBLIC_IP>/8000
